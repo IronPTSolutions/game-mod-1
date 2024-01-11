@@ -10,7 +10,7 @@ class Game {
     this.drawIntervalId = undefined;
 
     this.background = new Background(this.ctx);
-    this.mario = new Mario(this.ctx, 100, 400);
+    this.mario = new Mario(this.ctx, MARIO_X_PADDING, this.canvas.height - MARIO_GROUND_PADDING);
   }
 
   onKeyEvent(event) {
@@ -43,6 +43,7 @@ class Game {
   }
 
   clear() {
+    this.mario.clear();
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 }

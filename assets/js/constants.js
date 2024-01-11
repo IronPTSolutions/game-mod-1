@@ -7,7 +7,14 @@ const FPS = 1000 / 60;
 const KEY_RIGHT = 39;
 const KEY_LEFT = 37;
 const KEY_UP = 38;
+const KEY_FIRE = 32;
 
+const MARIO_X_PADDING = 100;
+const MARIO_GROUND_PADDING = 208;
+const MARIO_RUN_ANIMATION_TICK = 5;
+const MARIO_BULLET_BACK_OFF = 500;
+
+const SPEED_BULLET = 5;
 const SPEED_BACKGROUND = 1;
 const SPEED_MOVE = 5;
 const SPEED_JUMP = 10;

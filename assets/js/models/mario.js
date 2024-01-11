@@ -8,14 +8,31 @@ class Mario {
     this.y = y;
     this.y0 = this.y;
     this.vy = 0;
-    this.w = 50;
-    this.h = 50;
+    this.w = Math.ceil(121 / 2);
+    this.h = Math.ceil(160 / 2);
+
+    this.sprite = new Image();
+    this.sprite.src = '/assets/img/mario-sprite.png';
+    this.sprite.verticalFrames = 1;
+    this.sprite.verticalFrameIndex = 0;
+    this.sprite.horizontalFrames = 3;
+    this.sprite.horizontalFrameIndex = 0;
+    this.sprite.onload = () => {
+      this.sprite.isReady = true;
+      this.sprite.frameWidth = Math.ceil(this.sprite.width / this.sprite.horizontalFrames);
+      this.sprite.frameHeight = Math.ceil(this.sprite.height / this.sprite.verticalFrames);
+    }
 
     this.movements = {
       right: false,
       left: false,
-      isJumping: false
+      isJumping: false,
+      isShutting: false
     }
+
+    this.bullets = [];
+
+    this.animationTick = 0;
   }
 
   onKeyEvent(event) {
@@ -32,6 +49,11 @@ class Mario {
           this.jump();
         }
         break;
+      case KEY_FIRE:
+        if (enabled) {
+          this.fire();
+        }
+        break;
     }
   }
 
@@ -41,6 +63,18 @@ class Mario {
       this.y -= Math.ceil(this.h / 2);
       this.vy = -SPEED_JUMP;
     }
+  }
+
+  fire() {
+    if (!this.movements.isShutting) {
+      this.movements.isShutting = true;
+      this.bullets.push(new Bullet(this.ctx, this.x + this.w, this.y + Math.ceil(this.h / 2)));
+      setTimeout(() => this.movements.isShutting = false, MARIO_BULLET_BACK_OFF);
+    }
+  }
+
+  clear() {
+    this.bullets = this.bullets.filter((bullet) => bullet.x < this.ctx.canvas.width);
   }
 
   move() {
@@ -57,10 +91,45 @@ class Mario {
       this.y = this.y0;
       this.movements.isJumping = false;
     }
+
+    this.bullets.forEach((bullet) => bullet.move());
   }
 
   draw() {
-    this.ctx.fillRect(this.x, this.y, this.w, this.h);
+    if (this.sprite.isReady) {
+      this.ctx.drawImage(
+        this.sprite,
+        this.sprite.horizontalFrameIndex * this.sprite.frameWidth,
+        this.sprite.verticalFrameIndex * this.sprite.frameHeight,
+        this.sprite.frameWidth,
+        this.sprite.frameHeight,
+        this.x,
+        this.y,
+        this.w,
+        this.h
+      )
+
+      this.animate();
+    }
+
+    this.bullets.forEach((bullet) => bullet.draw());
+  }
+
+  animate() {
+    this.animationTick++;
+
+    if (this.movements.isJumping) {
+      this.sprite.horizontalFrameIndex = 1;
+    } else if (this.animationTick >= MARIO_RUN_ANIMATION_TICK && (this.movements.right || this.movements.left)) {
+      this.animationTick = 0;
+      this.sprite.horizontalFrameIndex++;
+
+      if (this.sprite.horizontalFrameIndex > this.sprite.horizontalFrames - 1) {
+        this.sprite.horizontalFrameIndex = 1;
+      }
+    } else if (!this.movements.right && !this.movements.left) {
+      this.sprite.horizontalFrameIndex = 0;
+    }
   }
 
 }
