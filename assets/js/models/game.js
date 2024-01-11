@@ -9,7 +9,8 @@ class Game {
     this.fps = FPS;
     this.drawIntervalId = undefined;
 
-    this.mario = new Mario(this.ctx, 100, 100);
+    this.background = new Background(this.ctx);
+    this.mario = new Mario(this.ctx, 100, 400);
   }
 
   onKeyEvent(event) {
@@ -33,9 +34,11 @@ class Game {
 
   move() {
     this.mario.move();
+    this.background.move();
   }
 
   draw() {
+    this.background.draw();
     this.mario.draw();
   }
 
