@@ -10,7 +10,7 @@ class Background {
     this.h = this.ctx.canvas.height;
 
     this.sprite = new Image();
-    this.sprite.src = '/assets/img/bg.jpg';
+    this.sprite.src = '/assets/img/backgrounds/game-bg.jpg';
     this.sprite.onload = () => {
       this.sprite.isReady = true;
     }

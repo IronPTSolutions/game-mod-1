@@ -92,6 +92,10 @@ class Mario {
       this.movements.isJumping = false;
     }
 
+    if (this.x < 0){
+      this.x = 0;
+    }
+
     this.bullets.forEach((bullet) => bullet.move());
   }
 

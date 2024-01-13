@@ -1,4 +1,25 @@
 
+.hidden {
+  display: none !important;
+}
+
+.panel {
+  max-width: 800px;
+  max-height: 600px;
+  width: 100%;
+  height: 100%;
+}
+
+.panel-start {
+  background-image: url('/assets/img/backgrounds/start-panel-bg.jpg');
+  background-size: cover;
+}
+
+.game-controls {
+  right: 10px;
+  top: 10px;
+}
+
 canvas {
   border: 1px solid black;
 }
